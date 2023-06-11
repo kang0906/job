@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>파일확장자 차단</title>
+</head>
+<body>
+<h1 style="text-align: center;">파일확장자 차단</h1>
+<div th:text="${message}" style="text-align: center;color: red;font-size: 18px"/>
+<div style="margin: auto;padding: 10px;border: solid darkgray;width: 600px">
+<div style="height: 50px">
+    <p style="margin: 0px; height: 50px; width: 100px; float: left;">고정 확장자</p>
+    <div style="float: left;" th:each="extension : ${DefaultExtensionList}">
+        <div style="vertical-align: middle; float: left;width: 80px; height: 50px">
+            <input style="" type="checkbox" th:id="${extension.getExtension()}" th:name="${extension.getExtension()}"
+                   th:checked="${extension.getIsChecked()}"
+                   th:onchange="'location.href=\'/extension/default/'+ @{${extension.getExtension}} + '\''">
+            <label style="" th:for="${extension.getExtension()}" th:text="${extension.getExtension()}">test</label>
+        </div>
+    </div>
+</div>
+
+<div style="clear: both;">
+    커스텀 확장자
+    <input style="border-radius: 5px; height: 18px; border: solid gray 1px" type="text" id="add">
+    <input type="button" id="addClick" value="+추가" onclick="addCustom()">
+    <div style="margin: 5px 0px 0px 107px; width: 400px; height: 300px; border-radius: 5px; border: solid gray 1px">
+        <div style="margin: 2px;font-size: 12px; color: gray"><div style="float: left" th:text="${ExtensionCount}">1</div>/200</div>
+        <div th:each="customExtension : ${ExtensionList}">
+            <div style="float: left;margin: 3px 3px 3px 7px; width: 60px; height: 18px; border-radius: 5px; border: solid gray 1px">
+                <p style="font-size: 13px;margin: 0px; float: left;" th:text="${customExtension.getExtension()}">test</p>
+                <input style="font-weight: 600; height: 18px; border: 0px ;float: right" type="button" value="X"
+                       th:id="${customExtension.getExtension()}" onclick="deleteCustom(this.getAttribute('id'))">
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+
+<script>
+    function addCustom(){
+        const a = '/extension/custom/' + document.getElementById('add').value;
+        if(a == '/extension/custom/'){
+            return;
+        }
+        let f = document.createElement('form');
+        f.setAttribute('method', 'post');
+        f.setAttribute('action', a);
+        document.body.appendChild(f);
+        f.submit();
+    }
+
+    function deleteCustom(name){
+        let a = '/extension/custom/' + name;
+        fetch('/extension/custom/' + name ,{ method: 'DELETE'}).then(() => window.history.go())
+    }
+</script>
+</html>
