@@ -1,3 +1,6 @@
+# API 명세서
+[API 명세서](https://documenter.getpostman.com/view/22820772/2s93sZ7uFE)
+
 
 # ERD
 
